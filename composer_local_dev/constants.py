@@ -21,7 +21,7 @@ CLOUD_CLI_CONFIG_PATH_ENV = "CLOUDSDK_CONFIG"
 KUBECONFIG_PATH_ENV = "KUBECONFIG"
 
 OPERATION_TIMEOUT_SECONDS = (
-    300  # TODO: Check if we need such timeout, or any timeout at all
+    600  # TODO: Check if we need such timeout, or any timeout at all
 )
 
 BAD_REQUEST_ERROR_CODE = 400
