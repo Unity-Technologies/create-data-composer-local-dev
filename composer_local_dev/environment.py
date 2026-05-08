@@ -661,7 +661,7 @@ class Environment:
                     "AIRFLOW__DATABASE__SQL_ALCHEMY_CONN": f"postgresql+psycopg2://postgres:airflow@{self.db_container_name}:5432/airflow",
                 },
                 "ports": {
-                    f"5432/tcp": "25432",
+                    f"5432/tcp": str(25432 + (self.port - 8080)),
                 },
             },
         }
