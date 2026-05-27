@@ -155,8 +155,8 @@ DAGS_PATH="${DAGS_PATH/#\~/$HOME}"
 if [ ! -d "$DAGS_PATH" ]; then
     fail "Directory does not exist: $DAGS_PATH"
 fi
-if [ ! -d "$DAGS_PATH/create_data_workflows" ]; then
-    fail "Directory $DAGS_PATH does not contain a create_data_workflows/ folder. Point to the repo root."
+if [ ! -d "$DAGS_PATH/data_analytics_workflows/create/dags" ]; then
+    fail "Directory $DAGS_PATH does not contain data_analytics_workflows/create/dags/. Point to the repo root."
 fi
 ok "DAGs path: $DAGS_PATH"
 
@@ -303,13 +303,18 @@ else
 #
 # Ignore everything by default
 *
-!create_data_workflows/
-!create_data_workflows/dags/
-create_data_workflows/dags/*
-create_data_workflows/dags/*/
+
+# Re-include parent folders so leaf-level !patterns below can take effect
+!data_analytics_workflows/
+!data_analytics_workflows/create/
+!data_analytics_workflows/create/dags/
+
+# Exclude all files and sub-folders inside dags/ (re-include selectively below)
+data_analytics_workflows/create/dags/*
+data_analytics_workflows/create/dags/*/
 
 # Add the DAGs you want to allow:
-# !create_data_workflows/dags/my_dag.py
+# !data_analytics_workflows/create/dags/my_dag.py
 IGNORE_EOF
 
     ok ".airflowignore written to $AIRFLOW_IGNORE"
@@ -334,7 +339,7 @@ echo "  To add DAGs, edit:"
 echo "     $AIRFLOW_IGNORE"
 echo ""
 echo "     Add a line like this for each DAG you want to load:"
-echo "       !create_data_workflows/dags/my_dag.py"
+echo "       !data_analytics_workflows/create/dags/my_dag.py"
 echo ""
 echo "  Starting environment now (Ctrl+C to stop)..."
 echo ""
