@@ -1,0 +1,19 @@
+# Local-only PyPI pins for the Composer local-dev environment.
+#
+# WHY: composer-local-dev runs `pip install --upgrade -r composer_requirements.txt`
+# on every container start (see composer_local_dev/docker_files/entrypoint.sh). The
+# source environment (create-data-composer-test) declares these packages with loose
+# `>=` constraints — see create-data-terraform/test/composer.tf `pypi_packages`. With
+# `--upgrade`, pip re-resolves against *current* PyPI and pulls
+# snowflake-connector-python 4.x, which requires cryptography>=46 / requests>=2.32.4 —
+# newer than the airflow-2.10.2 base image pins (cryptography 44.0.1, requests 2.32.3).
+# That conflict sends pip into a long dependency-resolution backtracking storm.
+#
+# These pins mirror the versions the LIVE environment actually resolved to, so local
+# resolution is instant and matches prod.
+#
+# Source env image: composer-2.11.3-airflow-2.10.2
+apache-airflow-providers-snowflake==6.1.0
+astronomer-cosmos==1.9.0
+snowflake-connector-python==3.14.0
+snowflake-sqlalchemy==1.7.3
