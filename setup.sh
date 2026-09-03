@@ -236,24 +236,6 @@ if [ "$SKIP_CREATE" = "false" ]; then
     ok "Environment created"
 fi
 
-# Phase 5b: Apply local PyPI pin overrides (hotfix)
-
-info "Applying local PyPI pins..."
-
-# composer-dev generates composer/<env>/requirements.txt from the SOURCE env's
-# pypi_packages, which use loose `>=` constraints. On every start the container runs
-# `pip install --upgrade`, re-resolving against current PyPI and backtracking badly
-# (snowflake-connector-python 4.x pulls cryptography>=46 / requests>=2.32.4, newer
-# than the base image). We overwrite that file with versions pinned to what the live
-# environment actually resolved to.
-REQUIREMENTS_OVERRIDE="requirements.local.txt"
-
-if [ ! -f "$REQUIREMENTS_OVERRIDE" ]; then
-    fail "Missing $REQUIREMENTS_OVERRIDE (run setup.sh from the repo root)."
-fi
-cp "$REQUIREMENTS_OVERRIDE" "$ENV_DIR/requirements.txt"
-ok "Pinned requirements written to $ENV_DIR/requirements.txt"
-
 # Phase 6: Write variables.env
 
 info "Writing variables.env..."
